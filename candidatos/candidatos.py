@@ -10,6 +10,7 @@ from urllib import urlopen
 from xml.etree.ElementTree import parse
 from os import listdir
 from itertools import groupby
+from os import getcwd
 import pylab
 
 #
@@ -78,6 +79,13 @@ def getTotalDespesas(candidato):
     d = getDespesas(candidato)
     t = [reais2float(x[4]) for x in d[1:]]
     return sum(t)
+
+def getDoadores(candidato):
+    d = getDespesas(candidato)
+    doadores = [(x[4],x[1],x[0]) for x in d[1:]]
+    s = [(x,len(list(y))) for x,y in groupby(sorted(doadores))]
+    s = sorted(s, key=lambda x: x[1])
+    return s
 
 #
 # Utils
@@ -163,5 +171,5 @@ def plotCandidatoPor(atributo, candidatos):
 #
 
 def run():
-    cs = backup2objects('/home/vilson/meu-src/hackathon2010/candidatos/')
+    cs = backup2objects(getcwd() + '/data/')
     return cs
